@@ -1,5 +1,4 @@
-import 'package:Yes_Loyalty/testing/profile_edit_testing.dart';
-import 'package:Yes_Loyalty/ui/google_map_testing.dart';
+
 import 'package:Yes_Loyalty/ui/screens/auth/user_signup/layout_view.dart';
 import 'package:Yes_Loyalty/ui/screens/auth/user_otp/layout_view.dart';
 import 'package:Yes_Loyalty/ui/screens/auth/user_signin/layout_view.dart';
@@ -7,11 +6,9 @@ import 'package:Yes_Loyalty/ui/screens/auth/user_verify/layout_view.dart';
 import 'package:Yes_Loyalty/ui/screens/home/layout_view.dart';
 import 'package:Yes_Loyalty/ui/screens/misc/full_screen_alert/layout_view.dart';
 import 'package:Yes_Loyalty/ui/screens/misc/profile_edit/layout_view.dart';
-import 'package:Yes_Loyalty/ui/screens/misc/reset_password/layout_view.dart';
-import 'package:Yes_Loyalty/ui/testing_screen_1%20copy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:Yes_Loyalty/ui/screens/splash/splash_screen.dart';
-import 'package:Yes_Loyalty/ui/google_map_testing.dart';
+
 
 class MyappRoutes {
   static final GoRouter routes = GoRouter(

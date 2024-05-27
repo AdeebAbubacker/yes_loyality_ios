@@ -1,5 +1,4 @@
 import 'package:Yes_Loyalty/core/constants/text_styles.dart';
-import 'package:Yes_Loyalty/ui/testing_screen_1%20copy.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:qr_flutter/qr_flutter.dart';

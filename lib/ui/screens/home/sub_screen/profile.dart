@@ -2,7 +2,6 @@ import 'package:Yes_Loyalty/core/db/hive_db/adapters/user_details_adapter/user_d
 import 'package:Yes_Loyalty/core/db/hive_db/boxes/user_details_box.dart';
 import 'package:Yes_Loyalty/ui/animations/point_details_shimmer.dart';
 import 'package:Yes_Loyalty/ui/animations/profile_shimmer.dart';
-import 'package:Yes_Loyalty/ui/google_map_testing.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
