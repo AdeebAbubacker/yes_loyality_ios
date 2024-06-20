@@ -1,8 +1,8 @@
 import 'package:Yes_Loyalty/core/constants/common.dart';
 import 'package:Yes_Loyalty/core/constants/const.dart';
 import 'package:Yes_Loyalty/core/constants/text_styles.dart';
+import 'package:Yes_Loyalty/core/routes/app_route_config.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:Yes_Loyalty/core/db/shared/shared_prefernce.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -19,41 +19,35 @@ class SplashScreen extends StatelessWidget {
 
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Image.asset('assets/yes_loyality_log.png'),
-            SizedBox(height: spacing1),
-            Text(
-              "Version 1.0.2",
-              style: TextStyles.rubikregular14black3B,
+        child: Stack(children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/yesyes_loyality_logo.png'),
+            ],
+          ),
+          Positioned(
+            bottom: 20,
+            left: 0,
+            right: 0,
+            child: Column(
+              children: [
+                Text(
+                  "Version 1.0.1",
+                  style: TextStyles.rubikregular14black3B,
+                ),
+                SizedBox(height: height8),
+                Text(
+                  "Copyright @ 2024 Yes Yes Loyalty",
+                  style: TextStyles.rubikregular14grey66,
+                ),
+                SizedBox(
+                  height: height44,
+                ),
+              ],
             ),
-            SizedBox(height: height8),
-            Text(
-              "Copyright @ 2024 Yes Loyalty",
-              style: TextStyles.rubikregular14grey66,
-            ),
-            SizedBox(height: height8),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Text(
-            //       "Developed by Cyber Fort Technologies",
-            //       style: TextStyles.rubikregular14grey66,
-            //     ),
-            //     const SizedBox(width: 5),
-            //     const Icon(
-            //       Icons.favorite,
-            //       color: Colors.red,
-            //     )
-            //   ],
-            // ),
-          
-            SizedBox(
-              height: height44,
-            ),
-          ],
-        ),
+          ),
+        ]),
       ),
     );
   }
@@ -61,14 +55,13 @@ class SplashScreen extends StatelessWidget {
   void checkAccessToken(BuildContext context) async {
     final String? accessToken = await GetSharedPreferences.getAccessToken();
     if (accessToken != null) {
-       Future.delayed(const Duration(seconds: 3), () {
-         context.go('/home'); // Assuming '/home' is the route for the home screen
+      Future.delayed(const Duration(seconds: 3), () {
+        return navigateToHomeCleared(context);
       });
-     
     } else {
       // If no access token, navigate to sign-in screen after delay
       Future.delayed(const Duration(seconds: 3), () {
-        context.go('/sign_in');
+        return navigateTosiginCleared(context);
       });
     }
   }

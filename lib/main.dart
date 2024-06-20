@@ -1,7 +1,24 @@
-import 'package:Yes_Loyalty/firebase_options.dart';
-import 'package:device_preview/device_preview.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
+import 'package:Yes_Loyalty/core/db/hive_db/adapters/country_code_adapter/country_code_adapter.dart';
+import 'package:Yes_Loyalty/core/db/hive_db/boxes/country_code_box.dart';
+import 'package:Yes_Loyalty/core/view_model/change_password/change_password_bloc.dart';
+import 'package:Yes_Loyalty/core/view_model/delete_account/delete_account_bloc.dart';
+import 'package:Yes_Loyalty/core/view_model/forgot_password/forgot_password_bloc.dart';
+import 'package:Yes_Loyalty/core/view_model/get_support/get_support_bloc.dart';
+import 'package:Yes_Loyalty/core/view_model/reset_password/reset_password_bloc.dart';
+import 'package:Yes_Loyalty/core/view_model/verify_otp/verify_otp_bloc.dart';
+import 'package:Yes_Loyalty/ui/screens/auth/acc_created_success/layout_view.dart';
+import 'package:Yes_Loyalty/ui/screens/auth/user_signin/layout_view.dart';
+import 'package:Yes_Loyalty/ui/screens/auth/user_signup/layout_view.dart';
+import 'package:Yes_Loyalty/ui/screens/home/layout_view.dart';
+import 'package:Yes_Loyalty/ui/screens/misc/password-reset/reset-password.dart';
+import 'package:Yes_Loyalty/ui/screens/misc/password-reset/password-forgot.dart';
+import 'package:Yes_Loyalty/ui/screens/misc/password-reset/verify-otp.dart';
+import 'package:Yes_Loyalty/ui/screens/misc/profile_edit/layout_view.dart';
+import 'package:Yes_Loyalty/ui/screens/settings/support/support_screen.dart';
+import 'package:Yes_Loyalty/ui/screens/settings/user/change_password/change_password.dart';
+import 'package:Yes_Loyalty/ui/screens/settings/user/delete_account/delete_account.dart';
+import 'package:Yes_Loyalty/ui/screens/settings/user/user_settings.dart';
+import 'package:Yes_Loyalty/ui/screens/splash/splash_screen.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:Yes_Loyalty/core/db/hive_db/adapters/branch_list_adater/branch_list_adapter.dart';
 import 'package:Yes_Loyalty/core/db/hive_db/adapters/selected_branch_adater/selected_adapter.dart';
@@ -9,7 +26,6 @@ import 'package:Yes_Loyalty/core/db/hive_db/adapters/user_details_adapter/user_d
 import 'package:Yes_Loyalty/core/db/hive_db/boxes/branch_list_box.dart';
 import 'package:Yes_Loyalty/core/db/hive_db/boxes/selected_branch_box.dart';
 import 'package:Yes_Loyalty/core/db/hive_db/boxes/user_details_box.dart';
-import 'package:Yes_Loyalty/core/routes/app_route_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,32 +45,26 @@ void main() async {
 
   ///-------------Initialize Hive----------------------------
   await Hive.initFlutter();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
 
   ///-------------Register Adapter----------------------------
 
   Hive.registerAdapter(SelectedBranchDBAdapter());
   Hive.registerAdapter(BranchListDBAdapter());
   Hive.registerAdapter(UserDetailsDBAdapter());
+  Hive.registerAdapter(CountryCodeDBAdapter());
   selectedBranchBox = await Hive.openBox<SelectedBranchDB>('selectedBranchBox');
+  countryCodeBox = await Hive.openBox<CountryCodeDB>('countryCodeBox');
   BranchListBox = await Hive.openBox<BranchListDB>('BranchListBox');
   UserDetailsBox = await Hive.openBox<UserDetailsDB>('UserDetailsBox');
 
   ///----------------lock in portrait mode----------------------------------
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
-    runApp(
-         const MyApp()
-        // DevicePreview(
-        //   // enabled: !kReleaseMode,
-        //    enabled: true,
-        //   builder: (context) => const MyApp(), // Wrap your app
-        // ),
-        );
+    runApp(const MyApp());
   });
 }
+
+//-----------
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -62,48 +72,83 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => LoginBloc(),
-        ),
-        BlocProvider(
-          create: (context) => RegisterBloc(),
-        ),
-        BlocProvider(
-          create: (context) => LogoutBloc(),
-        ),
-        BlocProvider(
-          create: (context) => UserDetailsBloc(),
-        ),
-        BlocProvider(
-          create: (context) => OffersListBloc(),
-        ),
-        BlocProvider(
-          create: (context) => OfferInfoBloc(),
-        ),
-        BlocProvider(
-          create: (context) => StoreDetailsBloc(),
-        ),
-        BlocProvider(
-          create: (context) => StoreListBloc(),
-        ),
-        BlocProvider(
-          create: (context) => TransactionDetailsBloc(),
-        ),
-        BlocProvider(
-          create: (context) => ProfileEditBloc(),
-        ),
-      ],
-      child: MaterialApp.router(
-      //  useInheritedMediaQuery: true,
-      //   locale: DevicePreview.locale(context),
-      //   builder: DevicePreview.appBuilder,
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(useMaterial3: false),
-        routerConfig: MyappRoutes.routes,
-      ),
-    );
+        providers: [
+          BlocProvider(
+            create: (context) => LoginBloc(),
+          ),
+          BlocProvider(
+            create: (context) => RegisterBloc(),
+          ),
+          BlocProvider(
+            create: (context) => LogoutBloc(),
+          ),
+          BlocProvider(
+            create: (context) => UserDetailsBloc(),
+          ),
+          BlocProvider(
+            create: (context) => OffersListBloc(),
+          ),
+          BlocProvider(
+            create: (context) => OfferInfoBloc(),
+          ),
+          BlocProvider(
+            create: (context) => StoreDetailsBloc(),
+          ),
+          BlocProvider(
+            create: (context) => StoreListBloc(),
+          ),
+          BlocProvider(
+            create: (context) => TransactionDetailsBloc(),
+          ),
+          BlocProvider(
+            create: (context) => ProfileEditBloc(),
+          ),
+          BlocProvider(
+            create: (context) => ChangePasswordBloc(),
+          ),
+          BlocProvider(
+            create: (context) => GetSupportBloc(),
+          ),
+          BlocProvider(
+            create: (context) => DeleteAccountBloc(),
+          ),
+          BlocProvider(
+            create: (context) => ForgotPasswordBloc(),
+          ),
+          BlocProvider(
+            create: (context) => VerifyOtpBloc(),
+          ),
+          BlocProvider(
+            create: (context) => ResetPasswordBloc(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(useMaterial3: false),
+          initialRoute: '/',
+          routes: {
+            '/': (context) => const SplashScreen(),
+            '/sigin': (context) => const SignInScreen(),
+            '/accCreatedSuccess': (context) =>
+                const AccountCreatedSuccessScreen(),
+            '/signup': (context) => SignupScreen(),
+            '/profileEdit': (context) => const ProfileEdit(),
+            '/changepassword': (context) => const ChangePassWord(),
+            '/forgotpassword': (context) => const ForgotPassWord(),
+            '/verfyOtp': (context) => const VerifyOtpScreen(),
+            '/userSettings': (context) => const UserSettings(),
+            '/getSupport': (context) => const GetSupportScreen(),
+            '/resetpassword': (context) => const ResetPasswordChangeScreen(),
+            '/deleteAccount': (context) => const DeleteAccount(),
+            '/home': (context) => const HomeScreen(),
+          },
+        ));
   }
 }
+
+
+
+
+
 
 

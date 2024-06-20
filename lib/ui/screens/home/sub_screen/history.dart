@@ -41,7 +41,23 @@ class History extends StatelessWidget {
             if (state.isLoading) {
               return const HistoryShimmer();
             } else if (state.isError) {
-              return const Text("You have no transaction in this branch");
+              return Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 120),
+                    Icon(
+                      Icons.comments_disabled_outlined,
+                      size: 85,
+                    ),
+                    Text(
+                      "You have no transaction in this branch",
+                      style: TextStyles.rubik16black33,
+                    ),
+                  ],
+                ),
+              );
             } else if (state.transactionDetails.data == null) {
               return HistoryShimmer();
             } else if (state.transactionDetails.data!.isEmpty) {

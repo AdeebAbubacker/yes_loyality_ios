@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:Yes_Loyalty/core/constants/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,7 +12,7 @@ class QrPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(20.0),
       ),
       child: FutureBuilder(
         future: _loadCustomerId(), // Retrieve customer ID asynchronously
@@ -23,10 +24,12 @@ class QrPopup extends StatelessWidget {
             // Handle error
             return Text('Error: ${snapshot.error}');
           } else {
+            final jsonData = "type#user##value#${snapshot.data}";
+            final jsonString = const JsonEncoder().convert(jsonData);
             // Customer ID loaded successfully, display QR code
             return SizedBox(
               width: 80,
-              height: 320,
+              height: 300,
               child: Stack(
                 children: [
                   Align(
@@ -34,25 +37,26 @@ class QrPopup extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 0),
                         CustomPaint(
                           painter: QRBorderPainter(),
                           child: QrImageView(
-                            data: snapshot.data
-                                .toString(), // Display QR code with customer ID
+                            data: jsonString,
                             version: QrVersions.auto,
                             size: 150,
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 30),
                         Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 14),
+                          padding: const EdgeInsets.symmetric(horizontal: 14),
                           child: Column(
                             children: [
                               Text(
-                                "Scan the QR code at the bill desk to avail your offers.",
+                                "NB: Scan the QR code at the bill desk to avail your offers.",
                                 style: TextStyles.medium14black3B,
+                                textAlign: TextAlign.center,
                               )
                             ],
                           ),
@@ -61,22 +65,11 @@ class QrPopup extends StatelessWidget {
                     ),
                   ),
                   Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Material(
-                      shape: const CircleBorder(),
-                      color: Colors.transparent,
-                      child: IconButton(
-                        splashRadius: 50,
-                        onPressed: () {
-                          Navigator.pop(context); // Close the dialog
-                        },
-                        icon: SvgPicture.asset(
-                          "assets/Close.svg",
-                          color: Colors.black,
-                          width: 20,
-                        ),
-                      ),
+                    bottom: 99,
+                    left: 108,
+                    child: Text(
+                      '${snapshot.data}',
+                      style: TextStyles.rubikregular16black24w400,
                     ),
                   ),
                 ],

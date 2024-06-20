@@ -3,7 +3,7 @@ import 'package:Yes_Loyalty/core/constants/const.dart';
 import 'package:Yes_Loyalty/core/constants/text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
+
 
 class EnterOtpVerified extends StatelessWidget {
   const EnterOtpVerified({Key? key}) : super(key: key);
@@ -11,7 +11,8 @@ class EnterOtpVerified extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () async {
-     context.go("/sign_in");
+
+   
     
     });
     
